@@ -3,7 +3,23 @@ import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import Form from "./styles/Form";
 
-const CREATE_ITEM_MUTATION = ``;
+export const CREATE_ITEM_MUTATION = `
+    mutation CREATE_ITEM_MUTATION($title: String!
+            $description: String!
+            $price: Int!
+            image: String
+            largeImage: String
+        ) {
+        createItem(title: $title
+                description: $description
+                price: $price
+                image: $image
+                largeImage: $largeImage
+            ) {
+                id
+            }
+    }
+`;
 export default class CreateItem extends Component {
   state = {
     title: "",
