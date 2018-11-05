@@ -12,6 +12,19 @@ const mutations = {
     );
 
     return item;
+  },
+  updateItem: async (parent, args, ctx, info) => {
+    const updates = { ...args };
+    delete updates.id;
+    return ctx.db.query.updateItem(
+      {
+        data: updates,
+        where: {
+          id: args.id
+        }
+      },
+      info
+    );
   }
 };
 
