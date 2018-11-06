@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Mutation } from "react-apollo";
+import { Mutation, Query } from "react-apollo";
 import Router from "next/router";
 import gql from "graphql-tag";
 import Form from "./styles/Form";
@@ -24,6 +24,16 @@ export const UPDATE_ITEM_MUTATION = gql`
     }
   }
 `;
+
+export const SINGLE_ITEM_QUERY = gql`
+  query SINGLE_ITEM_QUERY($id: ID!) {
+    item(where: { id: $id }) {
+      title
+      description
+      price
+    }
+  }
+`;
 export default class UpdateItem extends Component {
   state = {};
 
@@ -39,58 +49,66 @@ export default class UpdateItem extends Component {
 
   render() {
     return (
-      <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
-        {(createItem, { loading, error, called, data }) => {
-          return (
-            <Form
-              onSubmit={async e => {
-                e.preventDefault();
+      <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
+        {({ loading, error, data }) => {
+          if (loading) return <div>Loading....</div>;
 
-                const response = await createItem();
-                console.log(response);
-                Router.push({
-                  pathname: "/item",
-                  query: { id: response.data.createItem.id }
-                });
+          return (
+            <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
+              {(createItem, { loading, error, called, data }) => {
+                return (
+                  <Form
+                    onSubmit={async e => {
+                      e.preventDefault();
+
+                      const response = await createItem();
+                      console.log(response);
+                      Router.push({
+                        pathname: "/item",
+                        query: { id: response.data.createItem.id }
+                      });
+                    }}
+                  >
+                    <Error error={error} />
+                    <fieldset disabled={loading} aria-busy={loading}>
+                      <label htmlFor="title">Title</label>
+                      <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Title"
+                        required
+                        value={this.state.title}
+                        onChange={this.handleChange}
+                      />
+                      <label htmlFor="price">Price</label>
+                      <input
+                        type="number"
+                        id="price"
+                        name="price"
+                        placeholder="Price"
+                        required
+                        value={this.state.price}
+                        onChange={this.handleChange}
+                      />
+                      <label htmlFor="price">Description</label>
+                      <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Enter A Description"
+                        required
+                        value={this.state.description}
+                        onChange={this.handleChange}
+                      />
+                      <button type="submit">Submit</button>
+                    </fieldset>
+                  </Form>
+                );
               }}
-            >
-              <Error error={error} />
-              <fieldset disabled={loading} aria-busy={loading}>
-                <label htmlFor="title">Title</label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="Title"
-                  required
-                  value={this.state.title}
-                  onChange={this.handleChange}
-                />
-                <label htmlFor="price">Price</label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  placeholder="Price"
-                  required
-                  value={this.state.price}
-                  onChange={this.handleChange}
-                />
-                <label htmlFor="price">Description</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  placeholder="Enter A Description"
-                  required
-                  value={this.state.description}
-                  onChange={this.handleChange}
-                />
-                <button type="submit">Submit</button>
-              </fieldset>
-            </Form>
+            </Mutation>
           );
         }}
-      </Mutation>
+      </Query>
     );
   }
 }
