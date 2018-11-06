@@ -7,20 +7,21 @@ import Error from "./ErrorMessage";
 
 export const UPDATE_ITEM_MUTATION = gql`
   mutation UPDATE_ITEM_MUTATION(
-    $title: String!
-    $description: String!
-    $price: Int!
-    $image: String
-    $largeImage: String
+    $id: ID!
+    $title: String
+    $description: String
+    $price: Int
   ) {
-    createItem(
+    updateItem(
+      id: $id
       title: $title
       description: $description
       price: $price
-      image: $image
-      largeImage: $largeImage
     ) {
       id
+      title
+      description
+      price
     }
   }
 `;
@@ -47,26 +48,33 @@ export default class UpdateItem extends Component {
     });
   };
 
+  updateItem = async (e, updateItemMutation) => {
+    e.preventDefault();
+
+    const res = await updateItemMutation({
+      variables: {
+        ...this.state,
+        id: this.props.id
+      }
+    });
+
+    Router.push("/");
+  };
+
   render() {
     return (
       <Query query={SINGLE_ITEM_QUERY} variables={{ id: this.props.id }}>
         {({ loading, error, data }) => {
           if (loading) return <div>Loading....</div>;
+          if (!data.item) return <div>Item not found</div>;
 
           return (
             <Mutation mutation={UPDATE_ITEM_MUTATION} variables={this.state}>
-              {(createItem, { loading, error, called, data }) => {
+              {(updateItem, { loading, error }) => {
                 return (
                   <Form
-                    onSubmit={async e => {
-                      e.preventDefault();
-
-                      const response = await createItem();
-                      console.log(response);
-                      Router.push({
-                        pathname: "/item",
-                        query: { id: response.data.createItem.id }
-                      });
+                    onSubmit={e => {
+                      this.updateItem(e, updateItem);
                     }}
                   >
                     <Error error={error} />
@@ -78,7 +86,7 @@ export default class UpdateItem extends Component {
                         name="title"
                         placeholder="Title"
                         required
-                        value={this.state.title}
+                        defaultValue={data.item.title}
                         onChange={this.handleChange}
                       />
                       <label htmlFor="price">Price</label>
@@ -88,7 +96,7 @@ export default class UpdateItem extends Component {
                         name="price"
                         placeholder="Price"
                         required
-                        value={this.state.price}
+                        defaultValue={data.item.price}
                         onChange={this.handleChange}
                       />
                       <label htmlFor="price">Description</label>
@@ -97,10 +105,13 @@ export default class UpdateItem extends Component {
                         name="description"
                         placeholder="Enter A Description"
                         required
-                        value={this.state.description}
+                        defaultValue={data.item.description}
                         onChange={this.handleChange}
                       />
-                      <button type="submit">Submit</button>
+                      <button type="submit">
+                        Sav
+                        {loading ? "ing" : "e"}
+                      </button>
                     </fieldset>
                   </Form>
                 );
