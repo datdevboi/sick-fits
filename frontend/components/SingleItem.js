@@ -13,6 +13,15 @@ const SingleItemStyles = styled.div`
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
   min-height: 800px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .details {
+    margin: 3rem;
+    font-size: 2rem;
+  }
 `;
 
 export const SINGLE_ITEM_QUERY = gql`
@@ -41,6 +50,10 @@ export default class SingleItem extends Component {
                 <title>Sick fits | {data.item.title}</title>
               </Head>
               <img src={data.item.largeImage} alt={data.item.title} />
+              <div className="details">
+                <h2>Viewing {data.item.title}</h2>
+                <p>{data.item.description}</p>
+              </div>
             </SingleItemStyles>
           );
         }}
