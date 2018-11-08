@@ -36,7 +36,7 @@ export default class Signin extends Component {
               method="post"
               onSubmit={e => {
                 e.preventDefault();
-                signup();
+                signin();
               }}
             >
               <fieldset disabled={loading} aria-busy={loading}>
