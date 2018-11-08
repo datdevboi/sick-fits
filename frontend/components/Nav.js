@@ -9,6 +9,7 @@ const Nav = () => (
       {({ data, error, loading }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <Error error={error} />;
+        if (!data.me) return null;
         return <p>{data.me.name}</p>;
       }}
     </User>
