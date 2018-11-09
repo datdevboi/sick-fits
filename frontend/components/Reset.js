@@ -38,7 +38,15 @@ export default class Reset extends Component {
   };
   render() {
     return (
-      <Mutation mutation={RESET_PASSWORD_MUTATION} variables={this.state}>
+      <Mutation
+        mutation={RESET_PASSWORD_MUTATION}
+        variables={this.state}
+        refetchQueries={[
+          {
+            query: CURRENT_USER_QUERY
+          }
+        ]}
+      >
         {(resetPassword, { error, loading, called }) => {
           return (
             <Form
