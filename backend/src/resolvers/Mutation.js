@@ -121,7 +121,7 @@ const mutations = {
   resetPassword: async (
     parent,
     { resetToken, password, confirmPassword },
-    ctc,
+    ctx,
     info
   ) => {
     if (password !== confirmPassword) {
