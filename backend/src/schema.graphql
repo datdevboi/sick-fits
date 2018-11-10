@@ -6,6 +6,7 @@ type User {
   email: String!
   password: String!
   permissions: [Permission!]!
+  cart: [CartItem!]
 }
 
 type Mutation {
@@ -28,6 +29,7 @@ type Mutation {
     confirmPassword: String!
   ): User!
   updatePermissions(permissions: [Permission!], userId: String!): User
+  addToCart(id: ID!): CartItem
 }
 
 type SuccessMessage {
