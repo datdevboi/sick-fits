@@ -94,7 +94,7 @@ class UserPermissions extends React.Component {
               <input
                 type="checkbox"
                 checked={this.state.permissions.includes(permission)}
-                name={`${user.id}-permission-${permission}`}
+                id={`${user.id}-permission-${permission}`}
                 value={permission}
                 onChange={this.handlePermissionChange}
               />
