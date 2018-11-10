@@ -27,6 +27,7 @@ type Mutation {
     password: String!
     confirmPassword: String!
   ): User!
+  updatePermissions(permission: [Permission!], userId: String!): User
 }
 
 type SuccessMessage {
