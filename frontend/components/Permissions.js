@@ -1,4 +1,4 @@
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import PropTypes from "prop-types";
 import Error from "../components/ErrorMessage";
@@ -56,6 +56,20 @@ const Permissions = props => (
     }}
   </Query>
 );
+
+const UPDATE_PERMISSIONS_MUTATION = gql`
+  mutation UPDATE_PERMISSIONS_MUTATION(
+    $userId: String
+    $permissions: [Permission]
+  ) {
+    updatePermissions(userId: $userId, permissions: $permissions) {
+      id
+      name
+      email
+      permissions
+    }
+  }
+`;
 
 class UserPermissions extends React.Component {
   static propTypes = {
