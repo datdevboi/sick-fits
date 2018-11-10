@@ -1,5 +1,6 @@
 import { Query } from "react-apollo";
 import gql from "graphql-tag";
+import PropTypes from "prop-types";
 import Error from "../components/ErrorMessage";
 import Table from "../components/styles/Table";
 import SickButton from "../components/styles/SickButton";
@@ -57,6 +58,14 @@ const Permissions = props => (
 );
 
 class User extends React.Component {
+  static propTypes = {
+    user: PropTypes.shape({
+      name: PropTypes.string,
+      email: PropTypes.string,
+      id: PropTypes.string,
+      permissions: PropTypes.array
+    }).isRequired
+  };
   render() {
     const user = this.props.user;
     return (
