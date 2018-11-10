@@ -39,14 +39,14 @@ const Permissions = props => (
                   <th>Name</th>
                   <th>Email</th>
                   {possiblePermissions.map(permission => (
-                    <th>{permission}</th>
+                    <th key={permission}>{permission}</th>
                   ))}
                   <th>👇</th>
                 </tr>
               </thead>
               <tbody>
                 {data.users.map(user => {
-                  return <User user={user} />;
+                  return <UserPermissions key={user.id} user={user} />;
                 })}
               </tbody>
             </Table>
@@ -57,7 +57,7 @@ const Permissions = props => (
   </Query>
 );
 
-class User extends React.Component {
+class UserPermissions extends React.Component {
   static propTypes = {
     user: PropTypes.shape({
       name: PropTypes.string,
@@ -66,6 +66,10 @@ class User extends React.Component {
       permissions: PropTypes.array
     }).isRequired
   };
+
+  state = {
+    permissions: this.props.user.permissions
+  };
   render() {
     const user = this.props.user;
     return (
@@ -73,7 +77,7 @@ class User extends React.Component {
         <td>{user.name}</td>
         <td>{user.email}</td>
         {possiblePermissions.map(permission => (
-          <td>
+          <td key={`${user.id}-permission-${permission}`}>
             <label htmlFor={`${user.id}-permission-${permission}`}>
               <input
                 type="checkbox"
