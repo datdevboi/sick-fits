@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Table = styled.table`
   border-spacing: 0;
@@ -19,6 +19,9 @@ const Table = styled.table`
       button {
         width: 100%;
       }
+    }
+    label {
+      display: block;
     }
   }
   tr {
