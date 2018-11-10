@@ -202,7 +202,9 @@ const mutations = {
     return ctx.db.mutation.updateUser(
       {
         data: {
-          set: args.permissions
+          permissions: {
+            set: args.permissions
+          }
         },
         where: {
           id: args.userId
