@@ -39,7 +39,7 @@ class RemoveFromCart extends React.Component {
             <BigButton
               title="Delete Item"
               onClick={() => {
-                removeFromCart().then(e => {
+                removeFromCart().catch(e => {
                   alert(e.message);
                 });
               }}
