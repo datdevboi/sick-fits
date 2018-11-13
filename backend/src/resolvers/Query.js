@@ -28,6 +28,30 @@ const Query = {
     hasPermission(ctx.request.user, ["ADMIN", "PERMISSIONUPDATE"]);
 
     return ctx.db.query.users({}, info);
+  },
+  order: async (parent, { id }, ctx, info) => {
+    const userId = ctx.request.userId;
+    if (!userId) {
+      throw new Error("User needs to be signed in");
+    }
+    const order = await ctx.db.query.order(
+      {
+        where: {
+          id
+        }
+      },
+      info
+    );
+
+    const ownsOrder = order.user.id === userId;
+    const hasPermissionToSeeOrder = ctx.request.user.permissions.includes(
+      "ADMIN"
+    );
+    if (!ownsOrder || !hasPermissionToSeeOrder) {
+      throw new Error("You can not see this bud");
+    }
+
+    return order;
   }
 };
 
