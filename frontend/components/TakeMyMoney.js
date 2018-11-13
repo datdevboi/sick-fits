@@ -30,8 +30,8 @@ function totalItems(cart) {
 }
 
 class TakeMyMoney extends React.Component {
-  onToken = (res, createOrder) => {
-    createOrder({
+  onToken = async (res, createOrder) => {
+    const order = await createOrder({
       variables: {
         token: res.id
       }
@@ -52,7 +52,9 @@ class TakeMyMoney extends React.Component {
                     amount={calcTotalPrice(me.cart)}
                     description={`Order of ${totalItems(me.cart)} items!`}
                     name="Sick Fits"
-                    image={me.cart[0].item && me.cart[0].item.image}
+                    image={
+                      me.cart.length && me.cart[0].item && me.cart[0].item.image
+                    }
                     stripeKey={"pk_test_3BsLpmZIJHmzAG4PweXNZjtm"}
                     currency="USD"
                     email={me.email}
