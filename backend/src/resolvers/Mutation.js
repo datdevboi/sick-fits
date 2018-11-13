@@ -313,6 +313,7 @@ const mutations = {
         id
         description
         image
+        largeImage
       }
     }}`
     );
@@ -348,7 +349,7 @@ const mutations = {
 
     // 5. create the order
 
-    const order = await ctx.db.createOrder({
+    const order = await ctx.db.mutation.createOrder({
       data: {
         total: charge.amount,
         charge: charge.id,
