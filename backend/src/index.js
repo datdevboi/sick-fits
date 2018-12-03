@@ -46,10 +46,10 @@ server.express.use(async (req, res, next) => {
 // Start server
 server.start(
   {
-    cors: {
-      credentials: true,
-      origin: process.env.FRONTEND_URL
-    }
+    // cors: {
+    //   credentials: true,
+    //   origin: process.env.FRONTEND_URL
+    // }
   },
   deets => {
     console.log(
